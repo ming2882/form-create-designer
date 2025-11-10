@@ -87,6 +87,7 @@
         "element-plus": "^2.11.1",
         "js-beautify": "^1.15.1",
         "signature_pad": "^5.0.10",
+        "sortablejs": "1.14.0",
         "vuedraggable": "4.1.0"
     }
 }

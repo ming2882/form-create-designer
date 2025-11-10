@@ -1,6 +1,9 @@
 <template>
     <div class="_fd-tf-col" :style="colStyle">
-        <div class="_fd-tf-title" :style="{textAlign: align || 'center'}">
+        <div class="_fd-tf-title" :style="{ textAlign: align || 'center' }">
+            <el-tooltip :content="info" :raw-content="true" placement="top-start" v-if="info">
+                <el-button link><i class="fc-icon icon-question"></i></el-button>
+            </el-tooltip>
             <span v-if="required" class="_fd-tf-required">*</span>{{ label || '' }}
         </div>
         <div class="_fd-tf-con">
@@ -11,12 +14,13 @@
 
 <script>
 import is from '@form-create/utils/lib/type';
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'TableFormColumnView',
     props: {
         label: String,
+        info: String,
         align: String,
         width: [Number, String],
         color: String,
@@ -25,7 +29,7 @@ export default defineComponent({
     computed: {
         colStyle() {
             const w = this.width;
-            const style = {width: is.Number(w) ? `${w}px` : ((!w || w === 'auto') ? '180px' : w)};
+            const style = { width: is.Number(w) ? `${w}px` : ((!w || w === 'auto') ? '180px' : w) };
             if (this.color) {
                 style.color = this.color;
             }
@@ -39,7 +43,6 @@ export default defineComponent({
 </script>
 
 <style>
-
 ._fd-tf-col ._fd-tf-con .el-form-item {
     margin-bottom: 1px !important;
 }
@@ -52,7 +55,8 @@ export default defineComponent({
     flex-shrink: 0;
 }
 
-._fd-tf-con .el-form-item__label, ._fd-tf-con .van-field__label {
+._fd-tf-con .el-form-item__label,
+._fd-tf-con .van-field__label {
     display: none !important;
 }
 
@@ -89,11 +93,15 @@ export default defineComponent({
     flex-shrink: 0;
 }
 
-._fd-tf-con ._fc-l-item > * {
+._fd-tf-con ._fc-l-item>* {
     display: none !important;
 }
 
-._fd-tf-con .el-input-number, ._fd-tf-con .el-select, ._fd-tf-con .el-slider, ._fd-tf-con .el-cascader, ._fd-tf-con .el-date-editor {
+._fd-tf-con .el-input-number,
+._fd-tf-con .el-select,
+._fd-tf-con .el-slider,
+._fd-tf-con .el-cascader,
+._fd-tf-con .el-date-editor {
     width: 100%;
 }
 

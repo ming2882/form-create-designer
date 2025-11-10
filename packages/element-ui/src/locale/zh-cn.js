@@ -793,7 +793,10 @@ const ZhCn = {
                 max: '最多添加几行，为 0 则不限制',
                 min: '最少添加几行',
                 addable: '允许新增',
+                copyable: '允许复制',
+                sortable: '允许排序',
                 deletable: '允许删除',
+                columns: '调整列顺序',
             }
         },
         tableFormColumn: {
@@ -802,6 +805,7 @@ const ZhCn = {
             props: {
                 align: '对齐方式',
                 label: '标题',
+                info: '提示信息',
                 width: '宽度',
                 color: '颜色',
                 required: '是否显示必填星号',
@@ -886,7 +890,7 @@ const ZhCn = {
                 preview: '点击文件列表中已上传的文件时触发',
                 error: '文件上传失败时触发',
                 progress: '文件上传时触发',
-                exceed:'当超出限制时触发'
+                exceed: '当超出限制时触发'
             },
             props: {
                 listType: '上传类型',

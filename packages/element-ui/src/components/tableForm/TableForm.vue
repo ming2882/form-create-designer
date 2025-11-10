@@ -1,19 +1,17 @@
 <template>
-    <div class="_fc-table-form" :class="{'_fc-disabled': disabled}">
-        <component :is="Form" :option="options" :rule="rule" :extendOption="true"
-                   :disabled="disabled"
-                   @change="formChange"
-                   v-model:api="fapi"
-                   @emit-event="$emit"></component>
-        <el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)"
-                   @click="addRaw(true)"><i class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
+    <div class="_fc-table-form" :class="{ '_fc-disabled': disabled }">
+        <component :is="Form" :option="options" :rule="rule" :extendOption="true" :disabled="disabled" @change="formChange" v-model:api="fapi"
+            @emit-event="$emit"></component>
+        <el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)" @click="addRaw(true)"><i
+                class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
             {{ formCreateInject.t('add') || '添加' }}
         </el-button>
     </div>
 </template>
 
 <script>
-import {markRaw, reactive} from 'vue';
+import { markRaw, reactive } from 'vue';
+import Sortable from 'sortablejs';
 
 export default {
     name: 'TableForm',
@@ -38,6 +36,14 @@ export default {
             default: true,
         },
         addable: {
+            type: Boolean,
+            default: true,
+        },
+        copyable: {
+            type: Boolean,
+            default: true,
+        },
+        sortable: {
             type: Boolean,
             default: true,
         },
@@ -117,7 +123,10 @@ export default {
                 return flag;
             });
             const str = JSON.stringify(value);
+            //console.log(str, this.oldValue);
             if (str !== this.oldValue) {
+                // value.forEach((v, idx) => v.sortBy = idx);
+                // this.oldValue = JSON.stringify(value);
                 this.oldValue = str;
                 this.$emit('update:modelValue', value);
                 this.$emit('change', value);
@@ -189,9 +198,21 @@ export default {
         updateRaw(tr) {
             const idx = this.trs.indexOf(tr);
             tr.children[0].props.innerText = idx + 1;
-            tr.children[tr.children.length - 1].children[0].props.onClick = () => {
-                this.delRaw(idx);
-            };
+            tr.children[tr.children.length - 1].children.forEach(btn => {
+                if (btn.name === 'copy') {
+                    btn.props.onClick = () => {
+                        this.addRaw(true);
+                        this.setRawData(this.trs.length - 1, this.fapi.getChildrenFormData(tr));
+                    };
+                } else if (btn.name === 'delete') {
+                    btn.props.onClick = () => {
+                        this.delRaw(idx);
+                    };
+                }
+            });
+            // tr.children[tr.children.length - 1].children[0].props.onClick = () => {
+            //     this.delRaw(idx);
+            // };
         },
         loadRule() {
             const header = [{
@@ -214,11 +235,29 @@ export default {
                 header.push({
                     type: 'th',
                     native: true,
-                    style: {...column.style||{}, textAlign: column.align || 'center'},
+                    style: { ...column.style || {}, textAlign: column.align || 'center' },
                     class: column.required ? '_fc-tf-head-required' : '',
-                    props: {
-                        innerText: column.label || ''
-                    }
+                    // props: {
+                    //     innerText: column.info ? '' : column.label || '',
+                    // },
+                    children: column.info ? [{
+                        type: 'ElTooltip',
+                        props: {
+                            content: column.info, 'raw-content': true,
+                            placement: "top-start",
+                        },
+                        children: [{
+                            type: 'ElButton',
+                            props: { link: true },
+                            children: [{ type: 'i', class: 'fc-icon icon-question' }]
+                        }]
+                    }, {
+                        type: 'span',
+                        props: { innerText: column.label || '' }
+                    }] : [{
+                        type: 'span',
+                        props: { innerText: column.label || '' }
+                    }]
                 });
                 body.push({
                     type: 'td',
@@ -226,14 +265,15 @@ export default {
                     children: [...(column.rule || [])]
                 });
             });
-            header.push({
-                type: 'th',
-                native: true,
-                class: '_fc-tf-edit fc-clock',
-                props: {
-                    innerText: this.formCreateInject.t('operation') || '操作'
-                }
-            });
+            if (this.copyable || this.sortable || this.deletable)
+                header.push({
+                    type: 'th',
+                    native: true,
+                    class: '_fc-tf-edit fc-clock',
+                    props: {
+                        innerText: this.formCreateInject.t('operation') || '操作'
+                    }
+                });
             body.push({
                 type: 'td',
                 native: true,
@@ -242,9 +282,28 @@ export default {
                     {
                         type: 'i',
                         native: true,
+                        class: 'fc-icon icon-copy',
+                        props: {},
+                        name: 'copy',
+                        hidden: !this.copyable
+                    },
+                    {
+                        type: 'i',
+                        native: true,
+                        class: 'fc-icon icon-move',
+                        style: { cursor: 'move' },
+                        props: {},
+                        name: 'sort',
+                        hidden: !this.sortable
+                    },
+                    {
+                        type: 'i',
+                        native: true,
                         class: 'fc-icon icon-delete',
                         props: {},
-                    }
+                        name: 'delete',
+                        hidden: !this.deletable
+                    },
                 ],
             });
             this.copyTrs = this.formCreateInject.form.toJson([
@@ -261,9 +320,9 @@ export default {
                     native: true,
                     class: '_fc-tf-table',
                     props: {
-                        border: '1',
+                        border: '0',
                         cellspacing: '0',
-                        cellpadding: '0',
+                        cellpadding: '0'
                     },
                     children: [
                         {
@@ -280,6 +339,7 @@ export default {
                         {
                             type: 'tbody',
                             native: true,
+                            id: this.formCreateInject.id,
                             children: this.trs
                         }
                     ]
@@ -292,6 +352,19 @@ export default {
     },
     mounted() {
         this.updateTable();
+        const el = document.getElementById(this.formCreateInject.id);
+        new Sortable(el, {
+            animation: 150,
+            handle: '.icon-move',
+            onEnd: (event) => {
+                const movedItem = this.trs.splice(event.oldIndex, 1)[0];
+                this.trs.splice(event.newIndex, 0, movedItem);
+                this.updateValue();
+                for (var idx = 0; idx < event.target.childElementCount; idx++) {
+                    event.target.children[idx].children[0].innerText = idx + 1;
+                }
+            }
+        });
     }
 };
 </script>
@@ -307,10 +380,19 @@ export default {
 }
 
 ._fc-table-form .form-create td .el-form-item.is-error {
-    margin-bottom: 22px;
+    margin-bottom: 1px;
 }
 
-._fc-table-form .el-form-item__label, ._fc-table-form .van-field__label {
+._fc-table-form .form-create td .el-form-item.is-error ._fc-table-form:first-child {
+    box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+}
+
+._fc-table-form .el-form-item__label,
+._fc-table-form .van-field__label {
+    display: none !important;
+}
+
+._fc-tf-table .el-form-item__error {
     display: none !important;
 }
 
@@ -320,14 +402,16 @@ export default {
     width: 100% !important;
 }
 
-._fc-tf-head-idx, ._fc-tf-idx {
+._fc-tf-head-idx,
+._fc-tf-idx {
     width: 40px;
     min-width: 40px;
     font-weight: 500;
     text-align: center;
 }
 
-._fc-tf-edit, ._fc-tf-btn {
+._fc-tf-edit,
+._fc-tf-btn {
     width: 70px;
     min-width: 70px;
     text-align: center;
@@ -337,7 +421,8 @@ export default {
     cursor: pointer;
 }
 
-._fc-table-form._fc-disabled ._fc-tf-btn .fc-icon, ._fc-table-form._fc-disabled > .el-button {
+._fc-table-form._fc-disabled ._fc-tf-btn .fc-icon,
+._fc-table-form._fc-disabled>.el-button {
     cursor: not-allowed;
 }
 
@@ -350,7 +435,7 @@ export default {
     border-bottom: 0 none;
 }
 
-._fc-table-form ._fc-tf-table > thead > tr > th {
+._fc-table-form ._fc-tf-table>thead>tr>th {
     border: 0 none;
     border-bottom: 1px solid #EBEEF5;
     height: 40px;
@@ -359,7 +444,7 @@ export default {
     box-sizing: border-box;
 }
 
-._fc-table-form ._fc-tf-table > thead > tr > th + th {
+._fc-table-form ._fc-tf-table>thead>tr>th+th {
     border-left: 1px solid #EBEEF5;
 }
 
@@ -385,11 +470,15 @@ export default {
     border-bottom: 1px solid #EBEEF5;
 }
 
-._fc-table-form td + td {
+._fc-table-form td+td {
     border-left: 1px solid #EBEEF5;
 }
 
-._fc-tf-table .el-input-number, ._fc-tf-table .el-select, ._fc-tf-table .el-slider, ._fc-tf-table .el-cascader, ._fc-tf-table .el-date-editor {
+._fc-tf-table .el-input-number,
+._fc-tf-table .el-select,
+._fc-tf-table .el-slider,
+._fc-tf-table .el-cascader,
+._fc-tf-table .el-date-editor {
     width: 100%;
 }
 

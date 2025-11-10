@@ -1,6 +1,6 @@
 <template>
     <div class="_fd-table-form">
-        <div class="_fd-tf-wrap" v-if="$slots.default">
+        <div :id="this.formCreateInject.id" class="_fd-tf-wrap" v-if="$slots.default">
             <slot></slot>
         </div>
         <div class="_fc-child-empty" v-else></div>
@@ -8,13 +8,30 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
+import Sortable from 'sortablejs';
 
 export default defineComponent({
     name: 'TableFormView',
     data() {
         return {};
     },
+    props: {
+        formCreateInject: Object,
+    },
+    mounted() {
+        this.$nextTick(() => {
+            const el = document.getElementById(this.formCreateInject.id);
+            new Sortable(el, {
+                animation: 150,
+                handle: '._fd-drag-btn',
+                onEnd: (event) => {
+                    const movedItem = this.formCreateInject.rule.children.splice(event.oldIndex, 1)[0];
+                    this.formCreateInject.rule.children.splice(event.newIndex, 0, movedItem);
+                }
+            });
+        })
+    }
 });
 </script>
 
@@ -35,12 +52,11 @@ export default defineComponent({
     overflow: auto;
 }
 
-._fd-tf-wrap > ._fd-drag-tool {
+._fd-tf-wrap>._fd-drag-tool {
     flex-shrink: 0;
     display: flex;
     margin: 2px;
     height: auto;
     overflow: auto;
 }
-
 </style>

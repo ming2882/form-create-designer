@@ -1,5 +1,5 @@
 import unique from '@form-create/utils/lib/unique';
-import {localeProps} from '../../utils';
+import { localeProps } from '../../utils';
 
 const label = '表格表单';
 const name = 'tableForm';
@@ -24,6 +24,7 @@ export default {
                 _fc_drag_tag: 'tableFormColumn',
                 props: {
                     label: column.label,
+                    info: column.info,
                     align: column.align,
                     required: column.required || false,
                     width: column.style.width || '',
@@ -39,6 +40,7 @@ export default {
         rule.props.columns = children.map(column => {
             return {
                 label: column.props.label,
+                info: column.props.info,
                 required: column.props.required,
                 align: column.props.align,
                 style: {
@@ -50,7 +52,7 @@ export default {
         })
         rule.children = [];
     },
-    rule({t}) {
+    rule({ t }) {
         return {
             type: name,
             field: unique(),
@@ -60,7 +62,7 @@ export default {
             children: []
         };
     },
-    props(_, {t}) {
+    props(_, { t }) {
         return localeProps(t, name + '.props', [
             {
                 type: 'switch',
@@ -69,6 +71,16 @@ export default {
             {
                 type: 'switch',
                 field: 'addable',
+                value: true,
+            },
+            {
+                type: 'switch',
+                field: 'copyable',
+                value: true,
+            },
+            {
+                type: 'switch',
+                field: 'sortable',
                 value: true,
             },
             {
@@ -84,12 +96,12 @@ export default {
             {
                 type: 'inputNumber',
                 field: 'min',
-                props: {min: 0}
+                props: { min: 0 }
             },
             {
                 type: 'inputNumber',
                 field: 'max',
-                props: {min: 0}
+                props: { min: 0 }
             },
         ]);
     }

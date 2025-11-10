@@ -792,6 +792,8 @@ const En = {
                 max: 'Maximum number of rows to add, if 0, there is no limit',
                 min: 'Minimum number of rows to add',
                 addable: 'Allow to add',
+                copyable: 'Allow to copy',
+                sortable: 'Allow to sort',
                 deletable: 'Allow delete',
             }
         },
@@ -801,6 +803,7 @@ const En = {
             props: {
                 align: 'Align',
                 label: 'Title',
+                info: 'Info',
                 width: 'Width',
                 color: 'Color',
                 required: 'Whether to display required asterisks',

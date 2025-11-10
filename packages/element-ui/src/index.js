@@ -27,7 +27,7 @@ import ColorInput from './components/style/ColorInput.vue';
 import StyleConfig from './components/style/StyleConfig.vue';
 import LanguageInput from './components/language/LanguageInput.vue';
 import ValueInput from './components/ValueInput.vue';
-import formCreate, {designerForm} from './utils/form';
+import formCreate, { designerForm } from './utils/form';
 import FcEditor from '@form-create/component-wangeditor';
 import draggable from 'vuedraggable/src/vuedraggable';
 import {
@@ -42,7 +42,7 @@ import {
     makeTreeOptionsRule,
     toJSON
 } from './utils/index';
-import globalUseLocale, {t} from './utils/locale';
+import globalUseLocale, { t } from './utils/locale';
 import './style/index.css';
 import './style/icon.css';
 import './utils/highlight/style.css';
