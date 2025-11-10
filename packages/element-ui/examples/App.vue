@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="_fc-top">
+        <!-- <div class="_fc-top">
             <div v-if="topImg" @click="goPro" class="js-top-img top_img"
                  style="background: url('https://static.form-create.com/file/img/top2.jpg');height: 60px;background-repeat: no-repeat;background-size: cover;background-position: center;">
                 <div class="container pos">
@@ -21,7 +21,7 @@
                     <a href="https://github.com/xaboy/form-create-designer" target="_blank" class="item">查看源码</a>
                 </div>
             </div>
-        </div>
+        </div> -->
         <fc-designer ref="designer" :config="config" :handle="handle" :locale="locale">
             <template #handle>
                 <div class="handle">
@@ -29,7 +29,7 @@
                         <div class="el-dropdown-link">
                             <span>导入</span>
                             <el-icon class="el-icon--right">
-                                <arrow-down/>
+                                <arrow-down />
                             </el-icon>
                         </div>
                         <template #dropdown>
@@ -43,7 +43,7 @@
                         <div class="el-dropdown-link">
                             <span>导出</span>
                             <el-icon class="el-icon--right">
-                                <arrow-down/>
+                                <arrow-down />
                             </el-icon>
                         </div>
                         <template #dropdown>
@@ -58,7 +58,7 @@
             </template>
         </fc-designer>
 
-        <ElFooter class="_fc-copyright" height="30px">
+        <!-- <ElFooter class="_fc-copyright" height="30px">
             <div class="_fc-b-item">
                 <iframe
                     src="https://ghbtns.com/github-btn.html?user=xaboy&repo=form-create-designer&type=star&count=true"
@@ -76,19 +76,19 @@
                     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="mit"/>
                 </a>
             </div>
-        </ElFooter>
+        </ElFooter> -->
 
         <el-dialog :title="title[type]" v-model="state" class="_fc-t-dialog">
             <div ref="editor" v-if="state"></div>
             <span style="color: red;" v-if="err">输入内容格式有误!</span>
             <template #footer v-if="type > 2">
                 <span slot="footer" class="dialog-footer">
-            <el-button @click="state = false" size="small">取 消</el-button>
-            <el-button type="primary" @click="onOk" size="small">确 定</el-button>
-          </span>
+                    <el-button @click="state = false" size="small">取 消</el-button>
+                    <el-button type="primary" @click="onOk" size="small">确 定</el-button>
+                </span>
             </template>
         </el-dialog>
-        <ConfigPanel :menus="menus" @change="panelChange"></ConfigPanel>
+        <!-- <ConfigPanel :menus="menus" @change="panelChange"></ConfigPanel> -->
     </div>
 </template>
 
@@ -115,7 +115,7 @@ import formCreate from '@form-create/element-ui';
 import ZhCn from "../src/locale/zh-cn";
 import En from "../src/locale/en";
 import arrowDown from "@element-plus/icons-vue/dist/es/arrow-down.mjs";
-import {copyTextToClipboard} from "../src/utils";
+import { copyTextToClipboard } from "../src/utils";
 import ConfigPanel from "./components/ConfigPanel.vue";
 
 const CACHE_KEY = 'fc-config-$101';
@@ -187,11 +187,11 @@ export default {
                 this.locale = ZhCn;
                 this.lang = 'cn';
             }
-            this.config = {...this.config, ...config};
+            this.config = { ...this.config, ...config };
         },
         getCache() {
             function def() {
-                return {opt: null, rule: null};
+                return { opt: null, rule: null };
             }
 
             try {
@@ -206,7 +206,7 @@ export default {
                 return def();
             }
         },
-        setCache({opt, rule}) {
+        setCache({ opt, rule }) {
             localStorage.setItem(CACHE_KEY, JSON.stringify({
                 opt,
                 rule: formCreate.toJson(rule)
@@ -217,7 +217,7 @@ export default {
             if (s === false) return;
             this.autoSaveId = setInterval(() => {
                 if (this.$refs.designer) {
-                    this.setCache({opt: this.$refs.designer.getOption(), rule: this.$refs.designer.getRule()});
+                    this.setCache({ opt: this.$refs.designer.getOption(), rule: this.$refs.designer.getRule() });
                 } else {
                     this.autoSaveId && clearInterval(this.autoSaveId);
                     this.autoSaveId = null;
@@ -245,7 +245,7 @@ export default {
             this.$nextTick(() => {
                 this.editor = CodeMirror(this.$refs.editor, {
                     lineNumbers: true,
-                    mode: this.type === 2 ? {name: 'vue'} : 'application/json',
+                    mode: this.type === 2 ? { name: 'vue' } : 'application/json',
                     gutters: ['CodeMirror-lint-markers'],
                     lint: true,
                     line: true,
@@ -284,12 +284,12 @@ export default {
         setOption() {
             this.state = true;
             this.type = 4;
-            this.value = {form: {}};
+            this.value = { form: {} };
         },
         copyUrl() {
             const rule = this.$refs.designer.getJson();
             const options = this.$refs.designer.getOptionsJson();
-            const str = btoa(unescape(encodeURIComponent(JSON.stringify({rule, options}))));
+            const str = btoa(unescape(encodeURIComponent(JSON.stringify({ rule, options }))));
             copyTextToClipboard('https://form-create.com/v3/designer#' + str);
         },
         onOk() {
@@ -357,7 +357,7 @@ export default {
             // if (cache.opt) {
             //     this.$refs.designer.setOption(cache.opt);
             // }
-            this.$refs.designer.setRule("[{\"type\":\"html\",\"native\":true,\"attrs\":{\"innerHTML\":\"\"},\"style\":{\"display\":\"block\",\"width\":\"100%\"},\"children\":[\"<div class=\\\"_fd-view-box\\\">\\n  <div class=\\\"title\\\">FormCreate 设计器开源版演示站</div>\\n  <div class=\\\"desc\\\">开源免费可商用的可视化表单设计器</div>\\n<div class=\\\"_fd-view-products\\\">\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://form-create.com/v3/designer\\\" target=\\\"_blank\\\">\\n            <div><div>ElementPlus版PC端设计器👨🏻‍💻(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 ElementPlus 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product vue2\\\" href=\\\"https://form-create.com/designer\\\" target=\\\"_blank\\\">\\n            <div><div>ElementUI版PC端设计器👨🏻‍💻(Vue2)</div><span>立即体验</span></div> <span>采用 Vue2.7 和 ElementUI 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://form-create.com/v3/mobile\\\" target=\\\"_blank\\\">\\n            <div><div>ElementPlus版移动端设计器📱(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 ElementPlus 进行页面构建，移动端采用Vant4.0</span>\\n        </a>\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://form-create.com/v3/antd/designer\\\" target=\\\"_blank\\\">\\n            <div><div>Ant Design Vue版PC端设计器👨🏻‍💻(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 Ant Design Vue 进行页面构建</span>\\n        </a>\\n    </div>\\n</div>\"],\"_fc_id\":\"id_Fr6ym35jirw4acc\",\"name\":\"ref_Fcfnm35jirw4adc\",\"_fc_drag_tag\":\"html\",\"display\":true,\"hidden\":false},{\"type\":\"html\",\"native\":true,\"attrs\":{\"innerHTML\":\"\"},\"style\":{\"display\":\"block\",\"width\":\"100%\"},\"children\":[\"<div class=\\\"_fd-view-box\\\">\\n  <div class=\\\"title\\\">FormCreate 设计器<span style=\\\"color:#cd7f32;\\\">高级版</span>演示站</div>\\n  <div class=\\\"desc\\\">全面实现多端表单设计，为企业提供低代码表单解决方案</div>\\n<div class=\\\"_fd-view-products\\\">\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://pro.form-create.com/view\\\" target=\\\"_blank\\\">\\n            <div><div>ElementPlus版PC端设计器👨🏻‍💻(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 ElementPlus 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product vue2\\\" href=\\\"https://pro.form-create.com/vue2/view\\\" target=\\\"_blank\\\">\\n            <div><div>ElementUI版PC端设计器👨🏻‍💻(Vue2)</div><span>立即体验</span></div> <span>采用 Vue2.7 和 ElementUI 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://pro.form-create.com/mobile\\\" target=\\\"_blank\\\">\\n            <div><div>ElementPlus版移动端设计器📱(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 ElementPlus 进行页面构建，移动端采用Vant4.0</span>\\n        </a>\\n        <a class=\\\"_fd-view-product vue2\\\" href=\\\"https://pro.form-create.com/vue2/mobile\\\" target=\\\"_blank\\\">\\n            <div><div>ElementUI版移动端设计器📱(Vue2)</div><span>立即体验</span></div> <span>采用 Vue2.7 和 ElementUI 进行页面构建，移动端采用Vant2.0</span>\\n        </a>\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://pro.form-create.com/antd/view\\\" target=\\\"_blank\\\">\\n            <div><div>Ant Design Vue版PC端设计器👨🏻‍💻(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 Ant Design Vue 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product vue2\\\" href=\\\"https://pro.form-create.com/vue2/antd/view\\\" target=\\\"_blank\\\">\\n            <div><div>Ant Design Vue版PC端设计器👨🏻‍💻(Vue2)</div><span>立即体验</span></div> <span>采用 Vue2.7 和 Ant Design Vue 进行页面构建</span>\\n        </a>\\n        <a class=\\\"_fd-view-product\\\" href=\\\"https://pro.form-create.com/antd/mobile\\\" target=\\\"_blank\\\">\\n            <div><div>Ant Design Vue版移动端设计器📱(Vue3)</div><span>立即体验</span></div> <span>采用 Vue3.0 和 Ant Design Vue 进行页面构建，移动端采用Vant4.0</span>\\n        </a>\\n        <a class=\\\"_fd-view-product vue2\\\" href=\\\"https://pro.form-create.com/vue2/antd/mobile\\\" target=\\\"_blank\\\">\\n            <div><div>Ant Design Vue版移动端设计器📱(Vue2)</div><span>立即体验</span></div> <span>采用 Vue2.7 和 Ant Design Vue 进行页面构建，移动端采用Vant2.0</span>\\n        </a>\\n    </div>\\n</div>\"],\"_fc_id\":\"id_Fv9um7t07ek9abc\",\"name\":\"ref_Fwthm7t07ek9acc\",\"_fc_drag_tag\":\"html\",\"display\":true,\"hidden\":false}]");
+            this.$refs.designer.setRule('[{"info":"","name":"ref_F8g7mhn7dhmcfjc","type":"tableForm","class":"","field":"health","props":{"columns":[{"label":"名称","required":false,"style":{"width":"150px"},"rule":[{"info":"","name":"ref_F0cdmhn7e3fifqc","type":"input","field":"name","props":{"placeholder":"请输入名称"},"title":"","_fc_id":"id_Fnlhmhn7e3fifpc","hidden":false,"display":true,"$required":"请输入名称","_fc_drag_tag":"input"}]},{"label":"检测地址","info":"<h1>ElementPlus版PC端设计器</h1>","required":false,"style":{"width":"500px"},"rule":[{"name":"ref_F7ymmhn7e57uftc","type":"input","field":"url","props":{"placeholder":"请输入uri"},"title":"","_fc_id":"id_F6hqmhn7e57ufsc","hidden":false,"display":true,"$required":"请输入uri","_fc_drag_tag":"input"}]},{"label":"options","required":false,"style":{"width":"auto"},"rule":[{"type":"tableForm","field":"options","title":"表格表单","info":"","props":{"columns":[{"label":"code","required":false,"style":{"width":"auto"},"rule":[{"type":"input","field":"code","title":"输入框","info":"","$required":false,"_fc_id":"id_F6njmht7hilganc","name":"ref_Fbmmmht7hilgaoc","display":true,"hidden":false,"_fc_drag_tag":"input"}]}]},"_fc_id":"id_Fb3imht7hdxzaic","name":"ref_F419mht7hdxzajc","display":true,"hidden":false,"_fc_drag_tag":"tableForm","$required":true}]}]},"title":"","_fc_id":"id_Fjhqmhn7dhmcfic","hidden":false,"display":true,"_fc_drag_tag":"tableForm"}]');
             this.$refs.designer.setOption({
                 language: {
                     "zh-cn": {
@@ -481,8 +481,7 @@ export default {
     align-items: center;
 }
 
-._fc-top-link {
-}
+._fc-top-link {}
 
 ._fc-top a {
     height: 35px;
@@ -492,7 +491,7 @@ export default {
     text-decoration: none;
 }
 
-._fc-top a + a {
+._fc-top a+a {
     margin-left: 20px;
 }
 
@@ -532,7 +531,8 @@ export default {
     margin-right: 15px;
 }
 
-._fc-t-menu .el-dropdown, .handle .el-dropdown {
+._fc-t-menu .el-dropdown,
+.handle .el-dropdown {
     cursor: pointer;
 }
 
@@ -601,6 +601,7 @@ body {
     0% {
         background-position: 0 0;
     }
+
     100% {
         background-position: -100% 0;
     }
@@ -610,6 +611,7 @@ body {
     0% {
         background-position: 0 0;
     }
+
     100% {
         background-position: -100% 0;
     }
@@ -620,7 +622,7 @@ body {
     font-weight: 600;
 }
 
-._fd-view-box > .title {
+._fd-view-box>.title {
     font-weight: 800;
     font-size: 30px;
     line-height: 56px;
@@ -628,7 +630,7 @@ body {
     text-align: center;
 }
 
-._fd-view-box > .desc {
+._fd-view-box>.desc {
     text-align: center;
     font-size: 16px;
     line-height: 25px;
@@ -671,7 +673,7 @@ body {
     background-image: url(data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAB8CAYAAACYLF7bAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4wLWMwMDAgNzkuZGFiYWNiYiwgMjAyMS8wNC8xNC0wMDozOTo0NCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIyLjQgKE1hY2ludG9zaCkiIHhtcDpDcmVhdGVEYXRlPSIyMDI0LTEyLTIzVDIxOjAwOjE4KzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyNC0xMi0yM1QyMToxNzowNSswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNC0xMi0yM1QyMToxNzowNSswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpkMTEyOWQwYS1jMzEy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);
 }
 
-._fd-view-product.vue2 > div {
+._fd-view-product.vue2>div {
     color: #00C050;
 }
 
@@ -680,7 +682,7 @@ body {
     color: rgb(153, 153, 153);
 }
 
-._fd-view-product > div {
+._fd-view-product>div {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -690,7 +692,7 @@ body {
     margin-bottom: 6px;
 }
 
-._fd-view-product > div > span {
+._fd-view-product>div>span {
     font-size: 14px;
 }
 </style>
