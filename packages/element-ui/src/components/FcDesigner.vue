@@ -319,7 +319,7 @@
                     </div>
                     <template v-if="previewStatus === 'form'">
                         <ViewForm :rule="preview.rule" :option="preview.option" v-model:api="preview.api" @submit="previewSubmit"
-                            @reset="previewReset" :locale="locale?.name" v-if="preview.state">
+                            @reset="previewReset" :locale="locale?.name" v-if="preview.state" v-model="tempFromData">
                             <template v-for="(_, name) in $slots" #[name]="scope">
                                 <slot :name="name" v-bind="scope ?? {}" />
                             </template>
@@ -527,6 +527,7 @@ export default defineComponent({
             unloadStatus: false,
             previewStatus: 'form',
             t,
+            tempFromData: { code: 'test' },
             preview: {
                 state: false,
                 rule: [],

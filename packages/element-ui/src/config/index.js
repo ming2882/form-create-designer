@@ -41,6 +41,9 @@ import tableFormColumn from './rule/tableFormColumn';
 import image from './rule/image';
 import signaturePad from './rule/signaturePad';
 import title from './rule/title';
+import tableList from './rule/tableList';
+import descriptionList from './rule/descriptionList';
+import showText from './rule/showText';
 
 
 const ruleList = [
@@ -48,7 +51,7 @@ const ruleList = [
     group, subForm, tableForm, tableFormColumn,
     alert, button, text, title, html, divider, tag, image,
     row, table, tabs, space, card, collapse,
-    col, tabPane, collapseItem,
+    col, tabPane, collapseItem, tableList, descriptionList, showText
 ];
 
 export default ruleList;

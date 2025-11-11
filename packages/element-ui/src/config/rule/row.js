@@ -1,4 +1,4 @@
-import {localeProps} from '../../utils';
+import { localeProps } from '../../utils';
 
 const label = '栅格布局';
 const name = 'fcRow';
@@ -14,30 +14,48 @@ export default {
     rule() {
         return {
             type: name,
+            native: true,
             props: {},
             children: []
         };
     },
-    props(_, {t}) {
+    watch: {
+        formCreateNative({ value, rule }) {
+            if (value) {
+                rule.title = '';
+            }
+        }
+    },
+    props(_, { t }) {
         return localeProps(t, name + '.props', [{
+            type: 'switch', field: 'formCreateNative', title: '是否显示标题',
+            props: {
+                activeValue: false,
+                inactiveValue: true,
+            },
+            control: [{ value: false, rule: ['formCreateTitle'] }], value: true
+        }, {
+            type: 'input', title: '标题',
+            field: 'formCreateTitle',
+        }, {
             type: 'inputNumber',
             field: 'gutter',
-            props: {min: 0}
+            props: { min: 0 }
         }, {
             type: 'switch',
             field: 'type',
-            props: {activeValue: 'flex', inactiveValue: 'default'}
+            props: { activeValue: 'flex', inactiveValue: 'default' }
         }, {
             type: 'select',
             field: 'justify',
-            options: [{label: 'start', value: 'start'}, {label: 'end', value: 'end'}, {
+            options: [{ label: 'start', value: 'start' }, { label: 'end', value: 'end' }, {
                 label: 'center',
                 value: 'center'
-            }, {label: 'space-around', value: 'space-around'}, {label: 'space-between', value: 'space-between'}]
+            }, { label: 'space-around', value: 'space-around' }, { label: 'space-between', value: 'space-between' }]
         }, {
             type: 'select',
             field: 'align',
-            options: [{label: 'top', value: 'top'}, {label: 'middle', value: 'middle'}, {
+            options: [{ label: 'top', value: 'top' }, { label: 'middle', value: 'middle' }, {
                 label: 'bottom',
                 value: 'bottom'
             }]
