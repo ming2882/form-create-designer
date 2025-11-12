@@ -48,7 +48,7 @@
                                                 </div>
                                                 <span class="_fc-l-name">{{
                                                     t('com.' + element.name + '.name') || element.label
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </template>
                                     </fcDraggable>
@@ -280,7 +280,7 @@
                                 <div style="grid-area: style;">
                                     <el-divider v-if="styleForm.isShow" id="_fd-config-style">{{
                                         t('designer.style')
-                                    }}
+                                        }}
                                     </el-divider>
                                     <DragForm v-show="styleForm.isShow" :rule="styleForm.rule" :option="styleForm.options"
                                         :modelValue="styleForm.value" @change="styleChange" v-model:api="styleForm.api"></DragForm>
@@ -296,7 +296,7 @@
                                 <div v-if="activeRule" style="grid-area: validate;">
                                     <el-divider v-if="validateForm.isShow">{{
                                         t('designer.validate')
-                                    }}
+                                        }}
                                     </el-divider>
                                     <DragForm v-if="validateForm.isShow" v-model:api="validateForm.api" :rule="validateForm.rule"
                                         :option="validateForm.options" :modelValue="validateForm.value" @change="validateChange"
@@ -319,7 +319,7 @@
                     </div>
                     <template v-if="previewStatus === 'form'">
                         <ViewForm :rule="preview.rule" :option="preview.option" v-model:api="preview.api" @submit="previewSubmit"
-                            @reset="previewReset" :locale="locale?.name" v-if="preview.state" v-model="tempFromData">
+                            @reset="previewReset" :locale="locale?.name" v-if="preview.state">
                             <template v-for="(_, name) in $slots" #[name]="scope">
                                 <slot :name="name" v-bind="scope ?? {}" />
                             </template>
@@ -527,7 +527,7 @@ export default defineComponent({
             unloadStatus: false,
             previewStatus: 'form',
             t,
-            tempFromData: { code: 'test' },
+            // tempFromData: { code: '第一级code', test: { code: "第二级code" } },
             preview: {
                 state: false,
                 rule: [],

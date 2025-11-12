@@ -5,6 +5,7 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { deepGet } from "../utils";
 
 export default defineComponent({
 	name: 'showText',
@@ -27,7 +28,7 @@ export default defineComponent({
 			this.value = this.text;
 		} else if (this.showField) {
 			var formData = this.formCreateInject.api.formData();
-			this.value = formData[this.showField] || '';
+			this.value = deepGet(formData, this.showField, '');
 		}
 	},
 });
