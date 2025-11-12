@@ -1,4 +1,3 @@
-import { ru } from "element-plus/es/locale/index.mjs";
 import { localeOptions, localeProps } from "../../utils";
 
 const label = "显示字段";
