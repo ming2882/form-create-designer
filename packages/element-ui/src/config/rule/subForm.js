@@ -1,4 +1,4 @@
-import {localeProps} from '../../utils';
+import { localeProps } from '../../utils';
 import uniqueId from '@form-create/utils/lib/unique';
 
 const label = '分组';
@@ -26,22 +26,32 @@ export default {
         rule.type = 'subForm';
         delete rule.children;
     },
-    rule({t}) {
+    rule({ t }) {
         return {
             type: 'fcRow',
             field: uniqueId(),
             title: t('com.subForm.name'),
             info: '',
+            native: false,
             $required: false,
             props: {},
             children: []
         };
     },
-    props(_, {t}) {
+    watch: {
+        formCreateNative({ value, rule }) {
+            if (value) {
+                rule.title = "";
+            }
+        }
+    },
+    props(_, { t }) {
         return localeProps(t, name + '.props', [{
-            type: 'switch',
-            field: 'disabled'
-        }, {type: 'switch', field: 'syncDisabled', value: true},
+            type: 'switch', field: 'formCreateNative', title: '是否字段名称',
+            props: { activeValue: false, inactiveValue: true }, value: false
+        },
+        { type: 'switch', field: 'disabled' },
+        { type: 'switch', field: 'syncDisabled', value: true }
         ]);
     }
 };

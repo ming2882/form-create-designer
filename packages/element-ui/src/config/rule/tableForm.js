@@ -62,47 +62,57 @@ export default {
             children: []
         };
     },
+    watch: {
+        formCreateNative({ value, rule }) {
+            if (value) {
+                rule.title = "";
+            }
+        }
+    },
     props(_, { t }) {
-        return localeProps(t, name + '.props', [
-            {
-                type: 'switch',
-                field: 'disabled'
-            },
-            {
-                type: 'switch',
-                field: 'addable',
-                value: true,
-            },
-            {
-                type: 'switch',
-                field: 'copyable',
-                value: true,
-            },
-            {
-                type: 'switch',
-                field: 'sortable',
-                value: true,
-            },
-            {
-                type: 'switch',
-                field: 'deletable',
-                value: true,
-            },
-            {
-                type: 'switch',
-                field: 'filterEmptyColumn',
-                value: true,
-            },
-            {
-                type: 'inputNumber',
-                field: 'min',
-                props: { min: 0 }
-            },
-            {
-                type: 'inputNumber',
-                field: 'max',
-                props: { min: 0 }
-            },
+        return localeProps(t, name + '.props', [{
+            type: 'switch', field: 'formCreateNative', title: '是否字段名称',
+            props: { activeValue: false, inactiveValue: true }, value: false
+        },
+        {
+            type: 'switch',
+            field: 'disabled'
+        },
+        {
+            type: 'switch',
+            field: 'addable',
+            value: true,
+        },
+        {
+            type: 'switch',
+            field: 'copyable',
+            value: true,
+        },
+        {
+            type: 'switch',
+            field: 'sortable',
+            value: true,
+        },
+        {
+            type: 'switch',
+            field: 'deletable',
+            value: true,
+        },
+        {
+            type: 'switch',
+            field: 'filterEmptyColumn',
+            value: true,
+        },
+        {
+            type: 'inputNumber',
+            field: 'min',
+            props: { min: 0 }
+        },
+        {
+            type: 'inputNumber',
+            field: 'max',
+            props: { min: 0 }
+        }
         ]);
     }
 };
