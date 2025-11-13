@@ -778,6 +778,7 @@ const En = {
                 width: 'Width (px)',
                 activeText: 'Text description when opening',
                 inactiveText: 'Text description when closing',
+                inlinePrompt: 'Does the text appear within the dot',
                 activeValue: 'Value when opening',
                 inactiveValue: 'Value when closed',
                 activeColor: 'Background color when opening',

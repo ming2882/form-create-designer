@@ -1,5 +1,5 @@
 import uniqueId from '@form-create/utils/lib/unique';
-import {localeProps} from '../../utils';
+import { localeProps } from '../../utils';
 
 const label = '开关';
 const name = 'switch';
@@ -11,7 +11,7 @@ export default {
     name,
     input: true,
     event: ['change'],
-    rule({t}) {
+    rule({ t }) {
         return {
             type: name,
             field: uniqueId(),
@@ -24,23 +24,25 @@ export default {
             },
         };
     },
-    props(_, {t}) {
+    props(_, { t }) {
         return localeProps(t, name + '.props', [{
-            type: 'switch',
-            field: 'disabled'
+            type: 'switch', field: 'disabled'
         }, {
-            type: 'inputNumber',
-            field: 'width',
-            props: {min: 0},
-        }, {type: 'input', field: 'activeText'}, {
-            type: 'input',
-            field: 'inactiveText'
-        }, {type: 'ValueInput', field: 'activeValue'}, {
-            type: 'ValueInput',
-            field: 'inactiveValue'
-        }, {type: 'ColorInput', field: 'activeColor'}, {
-            type: 'ColorInput',
-            field: 'inactiveColor'
+            type: 'inputNumber', field: 'width', props: { min: 0 },
+        }, {
+            type: 'input', field: 'activeText'
+        }, {
+            type: 'input', field: 'inactiveText'
+        }, {
+            type: 'switch', field: 'inlinePrompt',
+        }, {
+            type: 'ValueInput', field: 'activeValue'
+        }, {
+            type: 'ValueInput', field: 'inactiveValue'
+        }, {
+            type: 'ColorInput', field: 'activeColor'
+        }, {
+            type: 'ColorInput', field: 'inactiveColor'
         }]);
     }
 };

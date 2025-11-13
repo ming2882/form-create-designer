@@ -779,6 +779,7 @@ const ZhCn = {
                 width: '宽度（px）',
                 activeText: '打开时的文字描述',
                 inactiveText: '关闭时的文字描述',
+                inlinePrompt: '文本是否显示在点内',
                 activeValue: '打开时的值',
                 inactiveValue: '关闭时的值',
                 activeColor: '打开时的背景色',
