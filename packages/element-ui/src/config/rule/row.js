@@ -38,6 +38,11 @@ export default {
             type: 'input', title: '标题',
             field: 'formCreateTitle',
         }, {
+            type: 'input',
+            field: 'className',
+            value: '',
+            title: t('form.title')+'class'
+        }, {
             type: 'inputNumber',
             field: 'gutter',
             props: { min: 0 }

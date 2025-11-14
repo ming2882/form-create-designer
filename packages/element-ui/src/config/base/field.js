@@ -22,6 +22,11 @@ export default function field({t}) {
             value: '',
             title: t('form.labelWidth'),
         }, {
+            type: 'input',
+            field: 'className',
+            value: '',
+            title: t('form.title')+'class'
+        }, {
             type: 'Struct',
             field: '_control',
             name: 'control',
