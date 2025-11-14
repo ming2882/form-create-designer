@@ -1,9 +1,9 @@
 <template>
 	<div class="_fc-table-form" :class="{ '_fc-disabled': disabled }">
-		<component :is="Form" :option="options" :rule="rule" :extendOption="true" :disabled="disabled"
-			@change="formChange" v-model:api="fapi" @emit-event="$emit"></component>
-		<el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)"
-			@click="addRaw(true)"><i class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
+		<component :is="Form" :option="options" :rule="rule" :extendOption="true" :disabled="disabled" @change="formChange" v-model:api="fapi"
+			@emit-event="$emit"></component>
+		<el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)" @click="addRaw(true)"><i
+				class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
 			{{ formCreateInject.t('add') || '添加' }}
 		</el-button>
 	</div>

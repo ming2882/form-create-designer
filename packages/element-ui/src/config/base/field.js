@@ -1,4 +1,4 @@
-export default function field({t}) {
+export default function field({ t }) {
     return [
         {
             type: 'FieldInput',
@@ -22,18 +22,23 @@ export default function field({t}) {
             value: '',
             title: t('form.labelWidth'),
         }, {
+            type: 'input',
+            field: 'className',
+            value: '',
+            title: '表单子项Class',
+        }, {
             type: 'Struct',
             field: '_control',
             name: 'control',
             value: [],
             title: t('form.control'),
-            warning: t('form.controlDocument', {doc: '<a target="_blank" href="https://view.form-create.com/control" style="color: inherit;text-decoration: underline;">' + t('form.document') + '</a>'}),
+            warning: t('form.controlDocument', { doc: '<a target="_blank" href="https://view.form-create.com/control" style="color: inherit;text-decoration: underline;">' + t('form.document') + '</a>' }),
             props: {
                 defaultValue: [],
                 validate(val) {
                     if (!Array.isArray(val)) return false;
                     if (!val.length) return true;
-                    return !val.some(({rule}) => {
+                    return !val.some(({ rule }) => {
                         return !Array.isArray(rule);
                     });
                 }
