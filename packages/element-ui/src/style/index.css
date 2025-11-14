@@ -823,7 +823,3 @@
 .CodeMirror-hints {
     z-index: 999999;
 }
-
-.form-create .form-create .el-form-item[role="group"] {
-	margin-bottom: 0px !important;
-}
