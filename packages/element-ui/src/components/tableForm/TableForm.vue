@@ -135,7 +135,6 @@ export default {
 			const str = JSON.stringify(value);
 			//console.log(str, this.oldValue);
 			if (str !== this.oldValue) {
-				console.log(this.sortBy)
 				if (this.sortBy) {
 					value.forEach((v, idx) => v[this.sortBy] = idx);
 					this.oldValue = JSON.stringify(value);
