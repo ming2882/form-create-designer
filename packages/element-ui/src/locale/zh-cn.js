@@ -798,6 +798,7 @@ const ZhCn = {
                 sortable: '允许排序',
                 deletable: '允许删除',
                 displayable: '默认显示',
+                sortBy: '排序字段',
                 columns: '调整列顺序',
             }
         },

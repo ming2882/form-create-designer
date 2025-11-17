@@ -104,6 +104,11 @@ export default {
             value: true,
         },
         {
+            type: 'input',
+            field: 'sortBy',
+            value: 'sortBy'
+        },
+        {
             type: 'switch',
             field: 'filterEmptyColumn',
             value: true,

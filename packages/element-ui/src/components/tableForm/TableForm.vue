@@ -54,6 +54,10 @@ export default {
 			type: Boolean,
 			default: true,
 		},
+		sortBy: {
+			type: String,
+			default: 'sortBy',
+		},
 		options: {
 			type: Object,
 			default: () => reactive(({
@@ -132,9 +136,12 @@ export default {
 			const str = JSON.stringify(value);
 			//console.log(str, this.oldValue);
 			if (str !== this.oldValue) {
-				// value.forEach((v, idx) => v.sortBy = idx);
-				// this.oldValue = JSON.stringify(value);
-				this.oldValue = str;
+				if (this.sortBy) {
+					value.forEach((v, idx) => v[this.sortBy] = idx);
+					this.oldValue = JSON.stringify(value);
+				} else {
+					this.oldValue = str;
+				}
 				this.$emit('update:modelValue', value);
 				this.$emit('change', value);
 			}
