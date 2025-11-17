@@ -56,7 +56,7 @@ export default {
 		},
 		sortBy: {
 			type: String,
-			default: 'sortBy',
+			default: '',
 		},
 		options: {
 			type: Object,
