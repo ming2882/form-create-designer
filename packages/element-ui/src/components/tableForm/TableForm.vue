@@ -1,10 +1,13 @@
 <template>
 	<div class="_fc-table-form" :class="{ '_fc-disabled': disabled }">
-		<component :is="Form" :option="options" :rule="rule" :extendOption="true" :disabled="disabled"
-			@change="formChange" v-model:api="fapi" @emit-event="$emit"></component>
-		<el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)"
-			@click="addRaw(true)"><i class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
+		<component :is="Form" :option="options" :rule="rule" :extendOption="true" :disabled="disabled" @change="formChange" v-model:api="fapi"
+			@emit-event="$emit"></component>
+		<el-button link type="primary" class="fc-clock" v-if="addable && (!max || max > this.trs.length)" @click="addRaw(true)" :disabled="!display">
+			<i class="fc-icon icon-add-circle" style="font-weight: 700;"></i>
 			{{ formCreateInject.t('add') || '添加' }}
+		</el-button>
+		<el-button link type="primary" class="fc-clock" @click="onDisplay()"><i class="fc-icon icon-textarea" style="font-weight: 700;"></i>
+			{{ display ? '显示' : '隐藏' }}
 		</el-button>
 	</div>
 </template>
@@ -47,6 +50,10 @@ export default {
 			type: Boolean,
 			default: true,
 		},
+		displayable: {
+			type: Boolean,
+			default: true,
+		},
 		options: {
 			type: Object,
 			default: () => reactive(({
@@ -82,21 +89,21 @@ export default {
 				_isEmpty: true,
 				native: true,
 				subRule: true,
-				children: [
-					{
-						type: 'td',
-						style: {
-							textAlign: 'center',
-						},
-						native: true,
-						subRule: true,
-						props: {
-							colspan: this.columns.length + (this.formCreateInject.preview ? 1 : 2),
-						},
-						children: [this.formCreateInject.t('dataEmpty') || '暂无数据']
-					}
-				]
+				children: [{
+					type: 'td',
+					style: {
+						textAlign: 'center',
+					},
+					native: true,
+					subRule: true,
+					props: {
+						colspan: this.columns.length + (this.formCreateInject.preview ? 1 : 2),
+					},
+					children: [this.formCreateInject.t('dataEmpty') || '暂无数据']
+				}]
 			},
+			display: this.displayable,
+			tbodyId: this.formCreateInject.id
 		};
 	},
 	methods: {
@@ -214,6 +221,29 @@ export default {
 			//     this.delRaw(idx);
 			// };
 		},
+		setSortable() {
+			const el = document.getElementById(this.tbodyId);
+			new Sortable(el, {
+				animation: 150,
+				handle: '.icon-move',
+				onEnd: (event) => {
+					const movedItem = this.trs.splice(event.oldIndex, 1)[0];
+					this.trs.splice(event.newIndex, 0, movedItem);
+					this.updateValue();
+					for (var idx = 0; idx < event.target.childElementCount; idx++) {
+						event.target.children[idx].children[0].innerText = idx + 1;
+					}
+				}
+			});
+		},
+		onDisplay() {
+			this.display = !this.display;
+			this.loadRule();
+			this.updateTable();
+			this.$nextTick(() => {
+				this.display && this.setSortable();
+			});
+		},
 		loadRule() {
 			const header = [{
 				type: 'th',
@@ -278,93 +308,71 @@ export default {
 				type: 'td',
 				native: true,
 				class: '_fc-tf-btn fc-clock',
-				children: [
-					{
-						type: 'i',
-						native: true,
-						class: 'fc-icon icon-copy',
-						props: {},
-						name: 'copy',
-						hidden: !this.copyable
-					},
-					{
-						type: 'i',
-						native: true,
-						class: 'fc-icon icon-move',
-						style: { cursor: 'move' },
-						props: {},
-						name: 'sort',
-						hidden: !this.sortable
-					},
-					{
-						type: 'i',
-						native: true,
-						class: 'fc-icon icon-delete',
-						props: {},
-						name: 'delete',
-						hidden: !this.deletable
-					},
-				],
+				children: [{
+					type: 'i',
+					native: true,
+					class: 'fc-icon icon-copy',
+					props: {},
+					name: 'copy',
+					hidden: !this.copyable
+				}, {
+					type: 'i',
+					native: true,
+					class: 'fc-icon icon-move',
+					style: { cursor: 'move' },
+					props: {},
+					name: 'sort',
+					hidden: !this.sortable
+				}, {
+					type: 'i',
+					native: true,
+					class: 'fc-icon icon-delete',
+					props: {},
+					name: 'delete',
+					hidden: !this.deletable
+				}]
 			});
-			this.copyTrs = this.formCreateInject.form.toJson([
-				{
-					type: 'tr',
+			this.copyTrs = this.formCreateInject.form.toJson([{
+				type: 'tr',
+				native: true,
+				subRule: true,
+				children: body
+			}]);
+			this.rule = [{
+				type: 'table',
+				native: true,
+				class: '_fc-tf-table',
+				props: {
+					border: '0',
+					cellspacing: '0',
+					cellpadding: '0'
+				},
+				hidden: !this.display,
+				children: [{
+					type: 'thead',
 					native: true,
-					subRule: true,
-					children: body
-				}
-			]);
-			this.rule = [
-				{
-					type: 'table',
-					native: true,
-					class: '_fc-tf-table',
-					props: {
-						border: '0',
-						cellspacing: '0',
-						cellpadding: '0'
-					},
 					children: [
 						{
-							type: 'thead',
+							type: 'tr',
 							native: true,
-							children: [
-								{
-									type: 'tr',
-									native: true,
-									children: header
-								}
-							]
-						},
-						{
-							type: 'tbody',
-							native: true,
-							id: this.formCreateInject.id,
-							children: this.trs
+							children: header
 						}
 					]
-				}
-			]
-		},
+				}, {
+					type: 'tbody',
+					native: true,
+					id: this.tbodyId,
+					children: this.trs
+				}]
+			}]
+		}
 	},
 	created() {
 		this.loadRule();
 	},
 	mounted() {
 		this.updateTable();
-		const el = document.getElementById(this.formCreateInject.id);
-		new Sortable(el, {
-			animation: 150,
-			handle: '.icon-move',
-			onEnd: (event) => {
-				const movedItem = this.trs.splice(event.oldIndex, 1)[0];
-				this.trs.splice(event.newIndex, 0, movedItem);
-				this.updateValue();
-				for (var idx = 0; idx < event.target.childElementCount; idx++) {
-					event.target.children[idx].children[0].innerText = idx + 1;
-				}
-			}
-		});
+		this.display && this.setSortable();
 	}
 };
 </script>

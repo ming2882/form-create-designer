@@ -797,6 +797,7 @@ const ZhCn = {
                 copyable: '允许复制',
                 sortable: '允许排序',
                 deletable: '允许删除',
+                displayable: '默认显示',
                 columns: '调整列顺序',
             }
         },

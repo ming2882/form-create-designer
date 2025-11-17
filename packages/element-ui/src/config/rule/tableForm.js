@@ -100,6 +100,11 @@ export default {
         },
         {
             type: 'switch',
+            field: 'displayable',
+            value: true,
+        },
+        {
+            type: 'switch',
             field: 'filterEmptyColumn',
             value: true,
         },

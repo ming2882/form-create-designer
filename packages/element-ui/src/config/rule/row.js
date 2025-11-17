@@ -35,8 +35,9 @@ export default {
             },
             control: [{ value: false, rule: ['formCreateTitle'] }], value: true
         }, {
-            type: 'input', title: '标题',
-            field: 'formCreateTitle',
+            type: 'input', title: '标题', field: 'formCreateTitle',
+        }, {
+            type: 'input', title: '标题Class', field: 'formCreateClassName',
         }, {
             type: 'input',
             field: 'className',
