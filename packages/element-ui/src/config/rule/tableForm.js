@@ -105,8 +105,7 @@ export default {
         },
         {
             type: 'input',
-            field: 'sortBy',
-            value: 'sortBy'
+            field: 'sortBy'
         },
         {
             type: 'switch',
