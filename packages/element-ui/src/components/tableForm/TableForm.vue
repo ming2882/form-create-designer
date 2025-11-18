@@ -9,6 +9,7 @@
 		<el-button link type="primary" class="fc-clock" @click="onDisplay()"><i class="fc-icon icon-textarea" style="font-weight: 700;"></i>
 			{{ display ? '显示' : '隐藏' }}
 		</el-button>
+		<el-text>共 {{ modelValue.length }} 条记录</el-text>
 	</div>
 </template>
 
